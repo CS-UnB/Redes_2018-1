@@ -1,11 +1,25 @@
-#client
+#!/usr/bin/python3           # This is client.py file
 
-import socket               # Import socket module
+import socket
 
-s = socket.socket()         # Create a socket object
-host = socket.gethostname() # Get local machine name
-port = 12345                # Reserve a port for your service.
+# create a socket object
+s = socket.socket(socket.AF_INET, socket.SOCK_STREAM) 
 
-s.connect((host, port))
-print(s.recv(1024))
-s.close                     # Close the socket when done
+# get local machine name
+host = socket.gethostname()                           
+
+port = 9999
+
+# connection to hostname on the port.
+s.connect((host, port))                               
+
+# Receive no more than 1024 bytes
+service = input("Would you like to...?:\n\tUpload (file)\t\tDownload (file)\n")         
+if service == 'upload':
+	s.send('downstream.file')
+elif service == 'download':
+	s.recv(1024)                            
+
+msg = s.recv(1024)
+s.close()
+print (msg.decode('ascii'))

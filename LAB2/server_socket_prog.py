@@ -1,16 +1,36 @@
-#socket_prog.py
-#server
+#!/usr/bin/python3           # This is server.py file
+import socket                                         
 
-import socket               # Import socket module
+# create a socket object
+serversocket = socket.socket(
+	        socket.AF_INET, socket.SOCK_STREAM) 
 
-s = socket.socket()         # Create a socket object
-host = socket.gethostname() # Get local machine name
-port = 12345                # Reserve a port for your service.
-s.bind((host, port))        # Bind to the port
+# get local machine name
+host = socket.gethostname()                           
 
-s.listen(5)                 # Now wait for client connection.
+port = 9999                                       
+
+# bind to the port
+serversocket.bind((host, port))                                  
+
+# opens file to write data to
+#f = open('torcv.txt', 'wb')
+
+# queue up to 5 requests
+serversocket.listen(5)  
+
 while True:
-   c, addr = s.accept()     # Establish connection with client.
-   print('Got connection from', addr)
-   c.send('Thank you for connecting')
-   c.close()                # Close the connection
+   # establish a connection
+   clientsocket,addr = serversocket.accept()      
+   print("Got a connection from %s" % str(addr))
+   msg = clientsocket.recv(1024)                                         	
+   print(msg)
+
+   print("Receiving \n")
+
+   #f.close()
+   print("Done receiving\n")
+    
+   msg = 'Thank you for connecting'+ "\r\n"
+   clientsocket.send(msg.encode('ascii'))
+   clientsocket.close()
