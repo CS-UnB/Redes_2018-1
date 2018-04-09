@@ -8,7 +8,7 @@ serversocket = socket.socket(
 # get local machine name
 host = socket.gethostname()                           
 
-port = 9999                                       
+port = 80  
 
 # bind to the port
 serversocket.bind((host, port))                                  
@@ -23,8 +23,8 @@ while True:
    # establish a connection
    clientsocket,addr = serversocket.accept()      
    print("Got a connection from %s" % str(addr))
-   msg = clientsocket.recv(1024)                                         	
-   print(msg)
+#   msg = clientsocket.recv(1024)                                         	
+#   print(msg)
 
    print("Receiving \n")
 

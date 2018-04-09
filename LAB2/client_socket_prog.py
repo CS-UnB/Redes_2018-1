@@ -8,18 +8,21 @@ s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 # get local machine name
 host = socket.gethostname()                           
 
-port = 9999
+port = 80
 
 # connection to hostname on the port.
 s.connect((host, port))                               
 
 # Receive no more than 1024 bytes
 service = input("Would you like to...?:\n\tUpload (file)\t\tDownload (file)\n")         
-if service == 'upload':
-	s.send('downstream.file')
-elif service == 'download':
-	s.recv(1024)                            
 
+#MENU:
+#if service == 'upload':
+#		s.send('downstream.file')
+#elif service == 'download':
+#		s.recv(1024)                            
+#else:
+		
 msg = s.recv(1024)
 s.close()
 print (msg.decode('ascii'))
