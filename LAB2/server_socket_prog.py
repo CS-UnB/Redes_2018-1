@@ -7,7 +7,7 @@ serversocket = socket.socket(
 
 # get local machine name
 host = socket.gethostname()                           
-
+print(host)
 port = 80  
 
 # bind to the port
@@ -20,17 +20,20 @@ serversocket.bind((host, port))
 serversocket.listen(5)  
 
 while True:
-   # establish a connection
-   clientsocket,addr = serversocket.accept()      
-   print("Got a connection from %s" % str(addr))
-#   msg = clientsocket.recv(1024)                                         	
-#   print(msg)
+   try:
+      # establish a connection
+      clientsocket,addr = serversocket.accept()      
+      print("Got a connection from %s" % str(addr))
+   #   msg = clientsocket.recv(1024)                                         	
+   #   print(msg)
 
-   print("Receiving \n")
+      print("Receiving \n")
 
-   #f.close()
-   print("Done receiving\n")
-    
-   msg = 'Thank you for connecting'+ "\r\n"
-   clientsocket.send(msg.encode('ascii'))
-   clientsocket.close()
+      #f.close()
+      print("Done receiving\n")
+       
+      msg = 'Thank you for connecting'+ "\r\n"
+      clientsocket.send(msg.encode('ascii'))
+      clientsocket.close()
+   except KeyboardInterrupt:
+      pass

@@ -7,7 +7,7 @@ s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
 # get local machine name
 host = socket.gethostname()                           
-
+print(host)
 port = 80
 
 # connection to hostname on the port.
@@ -22,7 +22,10 @@ service = input("Would you like to...?:\n\tUpload (file)\t\tDownload (file)\n")
 #elif service == 'download':
 #		s.recv(1024)                            
 #else:
-		
-msg = s.recv(1024)
+while True:	
+	msg = s.recv(1024)
+	if not msg:
+		break
+
 s.close()
 print (msg.decode('ascii'))
