@@ -1,39 +1,77 @@
 #!/usr/bin/python3           # This is server.py file
-import socket                                         
+import socket 
+from threading import *
+import sys       
 
-# create a socket object
-serversocket = socket.socket(
-	        socket.AF_INET, socket.SOCK_STREAM) 
+class client_thread(Thread):
 
-# get local machine name
-host = socket.gethostname()                           
-print(host)
-port = 80  
+   def __init__(self, socket, address):
+      Thread.__init__(self)
+      self.sock = socket
+      self.addr = address
+      self.start()
 
-# bind to the port
-serversocket.bind((host, port))                                  
+class MyServer:
 
-# opens file to write data to
-#f = open('torcv.txt', 'wb')
+   def __init__(self, sock=None):
+      if sock is None:
+         self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+      else:
+         self.sock = sock
 
-# queue up to 5 requests
-serversocket.listen(5)  
+   def bind_to(self, port=80, host=None):
+      if host is None:
+         host = socket.gethostname()
+      self.sock.bind((host, port))
+      print ('Server ' + host + ' binded to port ' + str(port) + '\r\n')
 
-while True:
-   try:
-      # establish a connection
-      clientsocket,addr = serversocket.accept()      
-      print("Got a connection from %s" % str(addr))
-   #   msg = clientsocket.recv(1024)                                         	
-   #   print(msg)
+   def listen_to(self, clients=3):
+      self.sock.listen(clients)
 
-      print("Receiving \n")
+   def accept_inbound_connection(self):
+      (client_socket,addr) = self.sock.accept()      
+      client = client_thread(client_socket, addr)
+      print ("Got a connection from %s" % str(addr))
+      return client
 
-      #f.close()
-      print("Done receiving\n")
-       
-      msg = 'Thank you for connecting'+ "\r\n"
-      clientsocket.send(msg.encode('ascii'))
-      clientsocket.close()
-   except KeyboardInterrupt:
-      pass
+   def close_socket(self):
+      self.sock.close()
+
+   def respond(self, client, msg=None):
+      if msg is None:
+         msg = 'Thank you for connecting\r\n'
+      client.sock.send(msg.encode('UTF-8'))
+
+   def receive(self):
+      response = ''
+      while (True):
+          recv = self.sock.recv(1024)
+          if not recv:
+              break
+          response += recv.decode()
+      print (response)
+
+   def receive_file(self, client, file_name='name.type'):
+      f = open(file_name, 'wb')
+      while (True):
+         l = client.sock.recv(1024)
+         while (l):
+            f.write(l)
+            l = client.sock.recv(1024)
+      f.close()
+
+def Main():
+   server = MyServer()
+   server.bind_to()           # binds to localhost if none specified
+   server.listen_to(3)
+   for i in range(5):
+         # receive connection from clients
+         client = server.accept_inbound_connection()
+         #server.respond(client, )
+         data = client.sock.recv(1024).decode()
+         print (data)
+         client.sock.close()
+   server.sock.close()
+
+if __name__ == '__main__':
+   Main()
