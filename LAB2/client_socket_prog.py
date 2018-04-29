@@ -28,7 +28,11 @@ class MyClient:
 		#	print ('Getting ready to post object to server')
 		#	self.send_object(object)
 		
+<<<<<<< HEAD
 	def get(self, host, target, port=123123):
+=======
+	def get(self, host, target, port=80):
+>>>>>>> 83346df656ab00fc8f63eb71fbd662dd4fd6147d
 		request_header = 'GET / HTTP/1.0\r\nHost:'+ host +'\r\nTarget:'+ target +'\r\nPort:'+ str(port) +'\r\n\r\n'
 		self.sock.send(request_header.encode('UTF-8'))
 		self.sock.shutdown(socket.SHUT_WR) # signals it has finished sending
