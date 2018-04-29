@@ -10,7 +10,7 @@ class MyClient:
 		else:
 			self.sock = sock
 
-	def connect_to_host(self, host=socket.gethostname(), port=80):
+	def connect_to_host(self, host=socket.gethostname(), port=123123):
 		self.host = host
 		self.sock.connect((host, port))
 
@@ -27,15 +27,15 @@ class MyClient:
 		#elif response[:3] == '104':
 		#	print ('Getting ready to post object to server')
 		#	self.send_object(object)
-
-	def get(self, host, target, port=80):
+		
+	def get(self, host, target, port=123123):
 		request_header = 'GET / HTTP/1.0\r\nHost:'+ host +'\r\nTarget:'+ target +'\r\nPort:'+ str(port) +'\r\n\r\n'
 		self.sock.send(request_header.encode('UTF-8'))
 		self.sock.shutdown(socket.SHUT_WR) # signals it has finished sending
 		self.wait_reply(target)
 		#self.sock.close()
 		
-	def post(self, host, file_name, port=80):
+	def post(self, host, file_name, port=123123):
 		request_header = 'POST / HTTP/1.0\r\nHost:'+ host +'\r\nObject:'+ file_name +'\r\nPort:'+ str(port) +'\r\n\r\n'
 		self.sock.send(request_header.encode('UTF-8'))
 		self.send_object(file_name)
@@ -62,7 +62,6 @@ class MyClient:
 
 def Main(argv=None):
 	client = MyClient()
-	client.connect_to_host()
 
 	try:
 		opts, args = getopt.getopt(argv, "h", ["get=", "post=", "head="])
@@ -76,10 +75,12 @@ def Main(argv=None):
 			sys.exit()
 		elif opt == '--get':
 			host, obj = arg.split('/', 1)
+			client.connect_to_host(host, )
 			client.get(host, obj, )
 			# draw menu
 		elif opt == '--post':
 			host, obj = arg.split('/', 1)
+			client.connect_to_host(host, )
 			client.post(host, obj, )
 			#draw menu
 		elif opt == '--head':
