@@ -27,7 +27,7 @@ class MyClient:
 		#elif response[:3] == '104':
 		#	print ('Getting ready to post object to server')
 		#	self.send_object(object)
-		
+
 	def get(self, host, target, port=123123):
 		request_header = 'GET / HTTP/1.0\r\nHost:'+ host +'\r\nTarget:'+ target +'\r\nPort:'+ str(port) +'\r\n\r\n'
 		self.sock.send(request_header.encode('UTF-8'))
