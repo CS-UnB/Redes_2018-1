@@ -64,16 +64,16 @@ class MyServer:
       port = port[5:]
       
       # resolving request 
-      if host != socket.gethostname():
-         print ('Requested host '+ host +' does not match localhost '+ socket.gethostname() +'\n')
-         self.respond(client, '400\r\nIncorrect HOST reached!\r\n')
-      else:
-         if method == 'GET':
-            print ('Object '+ target +' requested by client '+ str(client.addr) +'\n')
-            self.handle_get(client, target)
-         elif method == 'POS':
-            print ('Object '+ target +' posted by client '+ str(client.addr) +'\n')
-            self.handle_post(client, target)
+      #if host != socket.gethostname():
+      #   print ('Requested host '+ host +' does not match localhost '+ socket.gethostname() +'\n')
+      #   self.respond(client, '400\r\nIncorrect HOST reached!\r\n')
+      #else:
+      if method == 'GET':
+         print ('Object '+ target +' requested by client '+ str(client.addr) +'\n')
+         self.handle_get(client, target)
+      elif method == 'POS':
+         print ('Object '+ target +' posted by client '+ str(client.addr) +'\n')
+         self.handle_post(client, target)
 
 
    def receive_object(self, client, file_name):
