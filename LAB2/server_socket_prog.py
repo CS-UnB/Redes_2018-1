@@ -49,17 +49,16 @@ class MyServer:
          print (target +' NOT FOUND')
          self.respond(client, str('404\r\nRequested Object '+ target +' not found\r\n'))
 
-   def receive_request(self, client):
-      request = ''
-      while (True):
-          recv = client.sock.recv(1024)
-          if recv == b'':
-              break
-          request += recv.decode()
+   def handle_post(self, client, target):
+      #self.respond(client, str('104\r\nReady to receive object\r\n'))
+      self.receive_object(client, target)
 
+   def receive_request(self, client):
+      request = client.sock.recv(1024).decode()
       method, host, target, port = request.split("\r\n", 3)
       # cleaning meta-data
       method = method[:3]
+      print (method)
       host = host[5:] 
       target = target[7:]
       port = port[5:]
@@ -72,11 +71,13 @@ class MyServer:
          if method == 'GET':
             print ('Object '+ target +' requested by client '+ str(client.addr) +'\n')
             self.handle_get(client, target)
-            
+         elif method == 'POS':
+            print ('Object '+ target +' posted by client '+ str(client.addr) +'\n')
+            self.handle_post(client, target)
 
 
    def receive_object(self, client, file_name):
-      with open(str('./server_'+ file_name[2:]), 'wb') as f:
+      with open(str('./server_'+ file_name), 'wb') as f:
          data = client.sock.recv(1024)
          while data:
             print ('\nReceiving object...\n')
