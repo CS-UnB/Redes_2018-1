@@ -10,7 +10,7 @@ class MyClient:
 		else:
 			self.sock = sock
 
-	def connect_to_host(self, host=socket.gethostname(), port=123123):
+	def connect_to_host(self, host=socket.gethostname(), port=12312):
 		self.host = host
 		self.sock.connect((host, port))
 
@@ -27,15 +27,15 @@ class MyClient:
 		#elif response[:3] == '104':
 		#	print ('Getting ready to post object to server')
 		#	self.send_object(object)
-		
-	def get(self, host, target, port=123123):
+
+	def get(self, host, target, port=12312):
 		request_header = 'GET / HTTP/1.0\r\nHost:'+ host +'\r\nTarget:'+ target +'\r\nPort:'+ str(port) +'\r\n\r\n'
 		self.sock.send(request_header.encode('UTF-8'))
 		self.sock.shutdown(socket.SHUT_WR) # signals it has finished sending
 		self.wait_reply(target)
 		#self.sock.close()
 		
-	def post(self, host, file_name, port=123123):
+	def post(self, host, file_name, port=12312):
 		request_header = 'POST / HTTP/1.0\r\nHost:'+ host +'\r\nObject:'+ file_name +'\r\nPort:'+ str(port) +'\r\n\r\n'
 		self.sock.send(request_header.encode('UTF-8'))
 		self.send_object(file_name)

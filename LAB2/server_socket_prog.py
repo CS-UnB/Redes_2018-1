@@ -20,7 +20,7 @@ class MyServer:
       else:
          self.sock = sock
 
-   def bind_to(self, port=123123, host=None):
+   def bind_to(self, port=12312, host=None):
       if host is None:
          host = socket.gethostname()
       self.sock.bind((host, port))
